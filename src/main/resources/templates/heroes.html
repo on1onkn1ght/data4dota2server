@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>英雄</title>
+    <link rel="stylesheet" href="css/hero_info.css"/>
+    <link rel="stylesheet" href="css/page.css"/>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+<div th:replace="commons/header::header"></div>
+<hr>
+<div class="r_bar_bg">
+    <!--top-->
+    <div class="hero_top_wrap">
+        <h1>英雄</h1>
+    </div>
+    <div class="black_cont" style="height:710px;">
+        <div class="goods_main">
+            <div class="hero_tit_box" id="heroBioDynamic">
+                <div class="hero_name" id="heroBioName">&nbsp;</div>
+                <div class="hero_roles" id="heroBioRoles"><span class="bioTextAttack" id="attack_type">&nbsp;</span> - 核心 - 逃生 - 耐久 - 爆发 - 控制
+                </div>
+            </div>
+            <div id="heroFilterArea">
+                过滤器&nbsp;&nbsp;&nbsp;
+                <select onchange="updateFilters()" id="filterRole" class="filterSelect" name="">
+                    <option value="">按定位</option>
+                    <option value="">所有</option>
+                </select>
+                &nbsp;&nbsp;&nbsp;
+                <select onchange="updateFilters()" id="filterAttack" class="filterSelect" name="">
+                    <option value="">按攻击类型</option>
+                    <option value="">所有</option>
+                </select>
+                &nbsp;&nbsp;&nbsp;
+                <select onchange="updateFilters()" id="filterName" class="filterSelect noCaps" name="">
+                    <option value="">英雄名称</option>
+                    <option value="">所有</option>
+                </select>
+            </div>
+
+            <div style="width:870px; margin:0 auto; padding-top:20px;">
+                <ul class="hero_list" >
+                    <li class="hero_list_tit" style="z-index: 2;">
+                        <img src="images/attribute/overviewicon_str.png"/>
+                        <span>力量</span>
+                    </li>
+                    <li style="z-index: 2;" th:each="hero:${strheroes}" >
+                            <a th:id="'link_'+${hero.name_en}" class="heroPickerIconLink" target="_blank"
+                               th:href="'http://www.dota2.com.cn/hero/'+${hero.name_en}+'/'">
+                                <input type="hidden" th:value="${hero.name_cn}" class="name"/>
+                                <input type="hidden" th:value="${hero.attack_type}" class="attack"/>
+                                <img th:id="'base_'+${hero.name_en}" class="heroHoverSmall" th:src="${hero.icon_sb}">
+                            </a>
+                    </li>
+                </ul>
+                <ul class="hero_list">
+                    <li class="hero_list_tit" style="z-index: 2;">
+                        <img src="images/attribute/overviewicon_agi.png"/>
+                        <span class="str">敏捷</span>
+                    </li>
+                    <li style="z-index: 2;" th:each="hero:${agiheroes}" class="hero_li">
+                        <a th:id="'link_'+${hero.name_en}" class="heroPickerIconLink" target="_blank"
+                           th:href="'http://www.dota2.com.cn/hero/'+${hero.name_en}+'/'">
+                            <input type="hidden" th:value="${hero.name_cn}" class="name"/>
+                            <input type="hidden" th:value="${hero.attack_type}" class="attack"/>
+                            <img th:id="'base_'+${hero.name_en}" class="heroHoverSmall" th:src="${hero.icon_sb}">
+                        </a>
+                    </li>
+                </ul>
+                <ul class="hero_list">
+                    <li class="hero_list_tit" style="z-index: 2;">
+                        <img src="images/attribute/overviewicon_int.png"/>
+                        <span class="int">智力</span>
+                    </li>
+                    <li style="z-index: 2;" th:each="hero:${intheroes}">
+                        <a th:id="'link_'+${hero.name_en}" class="heroPickerIconLink" target="_blank"
+                           th:href="'http://www.dota2.com.cn/hero/'+${hero.name_en}+'/'">
+                            <input type="hidden" th:value="${hero.name_cn}" class="name"/>
+                            <input type="hidden" th:value="${hero.attack_type}" class="attack"/>
+                            <img th:id="'base_'+${hero.name_en}" class="heroHoverSmall" th:src="${hero.icon_sb}">
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<hr>
+<div th:replace="commons/foot::footer"></div>
+</body>
+<script>
+    $(function(){
+        $(".heroPickerIconLink").hover(function(){
+            var name = $(this).find(".name").val();
+            var attack = $(this).find(".attack").val();
+            $("#heroBioName").html(name);
+            $("#heroBioRoles").find(".bioTextAttack").text(attack);
+
+        })
+    });
+</script>
+</html>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.onionknight.data4dota2.mapper.ItemMapper" >
+    <resultMap id="BaseResultMap" type="com.onionknight.data4dota2.entity.Item" >
+        <id column="item_id" property="item_id" jdbcType="INTEGER" />
+        <result column="name_en" property="name_en" jdbcType="VARCHAR" />
+        <result column="name_cn" property="name_cn" jdbcType="VARCHAR" />
+        <result column="description" property="description" jdbcType="VARCHAR" />
+        <result column="price" property="price" jdbcType="INTEGER" />
+        <result column="hp" property="hp" jdbcType="INTEGER" />
+        <result column="mp" property="mp" jdbcType="INTEGER" />
+        <result column="str" property="str" jdbcType="DOUBLE" />
+        <result column="intl" property="intl" jdbcType="DOUBLE" />
+        <result column="agi" property="agi" jdbcType="DOUBLE" />
+        <result column="cd" property="cd" jdbcType="DOUBLE" />
+        <result column="cost" property="cost" jdbcType="INTEGER" />
+        <result column="attack_power" property="attack_power" jdbcType="DOUBLE" />
+        <result column="magic_power" property="magic_power" jdbcType="DOUBLE" />
+        <result column="armor" property="armor" jdbcType="DOUBLE" />
+        <result column="magic_resis" property="magic_resis" jdbcType="INTEGER" />
+        <result column="type" property="type" jdbcType="INTEGER" />
+        <result column="move_speed" property="move_speed" jdbcType="INTEGER" />
+        <result column="attack_speed" property="attack_speed" jdbcType="DOUBLE" />
+        <collection property="parts" ofType="com.onionknight.data4dota2.entity.Item" >
+            <id column="pitem_id" property="item_id" jdbcType="INTEGER" />
+            <result column="pname_en" property="name_en" jdbcType="VARCHAR" />
+            <result column="pname_cn" property="name_cn" jdbcType="VARCHAR" />
+        </collection>
+    </resultMap>
+    <insert id="addItem">
+        INSERT into items_copy(
+        item_id,
+        name_en,
+        name_cn,
+        price,
+        hp,
+        mp,
+        str,
+        intl,
+        agi,
+        attack_power,
+        magic_power,
+        armor,
+        cd,
+        cost,
+        magic_resis,
+        attack_arrange,
+        vision_field_day,
+        vision_field_night,
+        move_speed,
+        attack_speed,
+        description
+        )
+        values
+        <foreach collection="list" item="item" separator="," close=";">
+            (
+            #{item.item_id},
+            #{item.name_en},
+            #{item.name_cn},
+            #{item.price},
+            #{item.hp},
+            #{item.mp},
+            #{item.str},
+            #{item.intl},
+            #{item.agi},
+            #{item.attack_power},
+            #{item.magic_power},
+            #{item.armor},
+            #{item.cd},
+            #{item.cost},
+            #{item.magic_resis},
+            #{item.attack_arrange},
+            #{item.vision_field_day},
+            #{item.vision_field_night},
+            #{item.move_speed},
+            #{item.attack_speed},
+            #{item.description}
+            )
+        </foreach>
+
+    </insert>
+    <insert id="addRelation" >
+        insert into item_relation (item_id,parts_item_id) values (#{param1},#{param2})
+    </insert>
+    <select id="findItems" resultType="com.onionknight.data4dota2.entity.Item">
+        select
+            item_id,
+            name_en,
+            name_cn,
+            type
+        from items
+    </select>
+    <select id="getItemById" resultType="com.onionknight.data4dota2.entity.Item">
+        select * from items where item_id = #{param1}
+    </select>
+    <select id="getAllItems" resultMap="BaseResultMap">
+        select
+              i.item_id,
+              i.name_en,
+              i.name_cn,
+              i.description,
+              i.price,
+              i.hp,
+              i.mp,
+              i.str,
+              i.intl,
+              i.agi,
+              i.cd,
+              i.cost,
+              i.attack_power,
+              i.magic_power,
+              i.armor,
+              i.magic_resis,
+              i.type,
+              i.move_speed pmove_speed,
+              i.attack_speed pattack_speed,
+              p.item_id pitem_id,
+              p.name_en pname_en,
+              p.name_cn pname_cn
+              from items i left join item_relation r on i.item_id = r.item_id
+              left join items p
+              on r.parts_item_id = p.item_id order by i.item_id
+    </select>
+
+
+</mapper>

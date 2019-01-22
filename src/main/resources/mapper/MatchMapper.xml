@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.onionknight.data4dota2.mapper.MatchMapper">
+
+
+    <insert id="addMatchOverview" >
+        insert into matches (match_id,`overview`,replay_url) values (#{param1},#{param2},#{param3})
+    </insert>
+    <insert id="addMatchDetail">
+        UPDATE matches set detail = #{param2} where match_id = #{param1}
+    </insert>
+    <select id="getMatchUrl" resultType="com.onionknight.data4dota2.entity.MatchJson" parameterType="long">
+        select match_id,replay_url,detail from matches where match_id = #{id}
+    </select>
+    <select id="getMatchOverview" resultType="com.onionknight.data4dota2.entity.MatchJson">
+        select match_id,overview from matches where match_id = #{id}
+    </select>
+</mapper>

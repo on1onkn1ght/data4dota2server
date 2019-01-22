@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.onionknight.data4dota2.mapper.SkillMapper" >
+    <resultMap id="BaseResultMap" type="com.onionknight.data4dota2.entity.Skill" >
+        <id column="skill_id" property="skill_id" jdbcType="INTEGER" />
+        <result column="hero_id" property="hero_id" jdbcType="INTEGER" />
+        <result column="name_en" property="name_en" jdbcType="VARCHAR" />
+        <result column="name_cn" property="name_cn" jdbcType="VARCHAR" />
+        <result column="description" property="description" jdbcType="VARCHAR" />
+        <result column="mp_cost" property="mp_cost" jdbcType="VARCHAR" />
+        <result column="cd" property="cd" jdbcType="VARCHAR" />
+        <result column="details" property="details" jdbcType="VARCHAR" />
+        <result column="attributes" property="attributes" jdbcType="VARCHAR" />
+    </resultMap>
+    <insert id="addSkills" parameterType="java.util.List">
+        INSERT into skills_copy(name_cn,
+                            name_en,
+                            hero_id,
+                            description,
+                            mp_cost,
+                            cd,
+                            attributes,
+                            details)
+        values
+        <foreach collection="list" item="skill" separator="," close=";">
+            (#{skill.name_cn},
+             #{skill.name_en},
+             #{skill.hero_id},
+             #{skill.description},
+             #{skill.mp_cost},
+             #{skill.cd},
+             #{skill.attributes},
+             #{skill.details})
+        </foreach>
+    </insert>
+    <select id="getSkills" resultType="com.onionknight.data4dota2.entity.Skill">
+        select name_en from skills
+    </select>
+
+</mapper>

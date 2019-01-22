@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.onionknight.data4dota2.mapper.HeroMapper">
+    <resultMap id="BaseResultMap" type="com.onionknight.data4dota2.entity.Hero">
+        <id column="hero_id" property="hero_id" jdbcType="INTEGER"/>
+        <result column="hname_en" property="name_en" jdbcType="VARCHAR"/>
+        <result column="hname_cn" property="name_cn" jdbcType="VARCHAR"/>
+        <result column="hprimary_attr" property="primary_attr" jdbcType="VARCHAR"/>
+        <result column="hattack_type" property="attack_type" jdbcType="VARCHAR"/>
+        <result column="hcamp" property="camp" jdbcType="VARCHAR"/>
+        <result column="hroles" property="roles" jdbcType="VARCHAR"/>
+        <result column="hinit_hp" property="init_hp" jdbcType="INTEGER"/>
+        <result column="hinit_mp" property="init_mp" jdbcType="INTEGER"/>
+        <result column="hinit_str" property="init_str" jdbcType="DOUBLE"/>
+        <result column="hinit_agi" property="init_agi" jdbcType="DOUBLE"/>
+        <result column="hinit_int" property="init_intl" jdbcType="DOUBLE"/>
+        <result column="hinit_attack_power" property="init_attack_power" jdbcType="DOUBLE"/>
+        <result column="hinit_armor" property="init_armor" jdbcType="DOUBLE"/>
+        <result column="hinit_attack_speed" property="init_attack_speed" jdbcType="DOUBLE"/>
+        <result column="hinit_move_speed" property="init_move_speed" jdbcType="INTEGER"/>
+        <result column="hlevel_str" property="level_str" jdbcType="DOUBLE"/>
+        <result column="hlevel_agi" property="level_agi" jdbcType="DOUBLE"/>
+        <result column="hlevel_int" property="level_int" jdbcType="DOUBLE"/>
+        <result column="hattack_arrange" property="init_attack_arrange" jdbcType="INTEGER"/>
+        <result column="hvision_field_day" property="init_vision_field_day" jdbcType="INTEGER"/>
+        <result column="hvision_field_night" property="init_vision_field_night" jdbcType="INTEGER"/>
+        <result column="hball_speed" property="ball_speed" jdbcType="DOUBLE"/>
+        <result column="hdescription" property="description" jdbcType="VARCHAR"/>
+        <result column="htalents" property="talents" jdbcType="VARCHAR"/>
+        <collection property="skills" ofType="com.onionknight.data4dota2.entity.Skill" >
+            <id column="skill_id" property="skill_id"/>
+            <result column="sname_cn" property="name_cn" jdbcType="VARCHAR"/>
+            <result column="sname_en" property="name_en" jdbcType="VARCHAR"/>
+            <result column="shero_id" property="hero_id" jdbcType="INTEGER"/>
+            <result column="sdescription" property="description" jdbcType="VARCHAR"/>
+            <result column="smp_cost" property="mp_cost" jdbcType="VARCHAR"/>
+            <result column="scd" property="cd" jdbcType="VARCHAR"/>
+            <result column="sattributes" property="attributes" jdbcType="VARCHAR"/>
+            <result column="sdetails" property="details" jdbcType="VARCHAR"/>
+        </collection>
+    </resultMap>
+    <sql id="heroselect">
+        select
+           h.hero_id hero_id,
+           h.name_en hname_en,
+           h.name_cn hname_cn,
+           h.primary_attr hprimary_attr,
+           h.attack_type hattack_type,
+           h.camp hcamp,
+           h.roles hroles,
+           h.init_hp hinit_hp,
+           h.init_mp hinit_mp,
+           h.init_str hinit_str,
+           h.init_agi hinit_agi,
+           h.init_int hinit_int,
+           h.init_attack_power hinit_attack_power,
+           h.init_armor hinit_armor,
+           h.init_attack_speed hinit_attack_speed,
+           h.init_move_speed hinit_move_speed,
+           h.level_str hlevel_str,
+           h.level_agi hlevel_agi,
+           h.level_int hlevel_int,
+           h.attack_arrange hattack_arrange,
+           h.vision_field_day hvision_field_day,
+           h.vision_field_night hvision_field_night,
+           h.talents htalents,
+           h.ball_speed hball_speed,
+           h.description hdescription,
+           s.skill_id skill_id,
+           s.name_cn sname_cn,
+           s.name_en sname_en,
+           s.hero_id shero_id,
+           s.description sdescription,
+           s.mp_cost smp_cost,
+           s.cd scd,
+           s.attributes sattributes,
+           s.details sdetails
+        from heroes h LEFT JOIN skills s on h.hero_id = s.hero_id
+    </sql>
+    <insert id="addHero" parameterType="com.onionknight.data4dota2.entity.Hero" useGeneratedKeys="true"
+            keyProperty="hero_id">
+        INSERT into heroes_copy(hero_id,
+                                 name_en,
+                                 name_cn,
+                                 primary_attr,
+                                 attack_type,
+                                 camp,
+                                 roles,
+                                 init_hp,
+                                 init_mp,
+                                 init_str,
+                                 init_agi,
+                                 init_int,
+                                 init_attack_power,
+                                 init_armor,
+                                 init_attack_speed,
+                                 init_move_speed,
+                                 level_str,
+                                 level_agi,
+                                 level_int,
+                                 attack_arrange,
+                                 vision_field_day,
+                                 vision_field_night,
+                                 ball_speed,
+                                 description)
+        values
+        (#{hero_id},
+         #{name_en},
+         #{name_cn},
+         #{primary_attr},
+         #{attack_type},
+         #{camp},
+         #{roles},
+         #{init_hp},
+         #{init_mp},
+         #{init_str},
+         #{init_agi},
+         #{init_intl},
+         #{init_attack_power},
+         #{init_armor},
+         #{init_attack_speed},
+         #{init_move_speed},
+         #{level_str},
+         #{level_agi},
+         #{level_int},
+         #{init_attack_arrange},
+         #{init_vision_field_day},
+         #{init_vision_field_night},
+         #{ball_speed},
+         #{description})
+    </insert>
+    <update id="updateTalent" parameterType="com.onionknight.data4dota2.entity.Hero">
+        UPDATE heroes set talents = #{talents} WHERE name_cn = #{name_cn}
+    </update>
+
+    <select id="findByName" parameterType="string" resultMap="BaseResultMap">
+        <include refid="heroselect"></include>
+         where h.name_en = #{name}
+    </select>
+    <select id="findByAttri" resultType="com.onionknight.data4dota2.entity.Hero" parameterType="string">
+        select * from heroes where primary_attr = #{attribute}
+    </select>
+    <select id="findAllHero" resultMap="BaseResultMap">
+        <include refid="heroselect"></include>
+    </select>
+    <select id="findAllHeroName" resultType="com.onionknight.data4dota2.entity.Hero">
+        select hero_id,name_en,name_cn,roles,primary_attr,attack_type,camp from heroes
+    </select>
+
+</mapper>
