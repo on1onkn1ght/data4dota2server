@@ -12,27 +12,6 @@
         <result column="details" property="details" jdbcType="VARCHAR" />
         <result column="attributes" property="attributes" jdbcType="VARCHAR" />
     </resultMap>
-    <insert id="addSkills" parameterType="java.util.List">
-        INSERT into skills_copy(name_cn,
-                            name_en,
-                            hero_id,
-                            description,
-                            mp_cost,
-                            cd,
-                            attributes,
-                            details)
-        values
-        <foreach collection="list" item="skill" separator="," close=";">
-            (#{skill.name_cn},
-             #{skill.name_en},
-             #{skill.hero_id},
-             #{skill.description},
-             #{skill.mp_cost},
-             #{skill.cd},
-             #{skill.attributes},
-             #{skill.details})
-        </foreach>
-    </insert>
     <select id="getSkills" resultType="com.onionknight.data4dota2.entity.Skill">
         select name_en from skills
     </select>

@@ -12,7 +12,5 @@ import java.util.List;
  * @Version :
  */
 public interface SkillMapper {
-    void addSkills(List<Skill> skills);
-
     List<Skill> getSkills();
 }

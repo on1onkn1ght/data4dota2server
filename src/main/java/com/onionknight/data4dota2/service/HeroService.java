@@ -16,10 +16,5 @@ import java.util.List;
  */
 public interface HeroService {
     Hero findByName(String name);
-    List<Hero> findByAttri(String attribute);
-    List<Hero> findAllHero();
-    void addAllHeroIfo(List<Hero> heroList);
-    List<Dota2Heroes> findAllHeroFromSteam(Dota2WebApiClient client);
     List<Hero> findAllHeroName();
-    void updateTalent(List<Hero> heroList);
 }

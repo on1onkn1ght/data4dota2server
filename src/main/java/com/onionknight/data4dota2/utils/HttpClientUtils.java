@@ -23,11 +23,6 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
-/**
- * @web http://www.mobctrl.net
- * @author Zheng Haibo
- * @Description: 文件下载 POST GET
- */
 public class HttpClientUtils {
 
     /**
@@ -36,10 +31,8 @@ public class HttpClientUtils {
     public static final int THREAD_POOL_SIZE = 5;
 
     public interface HttpClientDownLoadProgress {
-        public void onProgress(int progress);
+        void onProgress(int progress);
     }
-
-    private static HttpClientUtils httpClientDownload;
 
     private ExecutorService downloadExcutorService;
 
@@ -47,11 +40,14 @@ public class HttpClientUtils {
         downloadExcutorService = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
     }
 
+    /**
+     *  内部类实现单例
+     */
+    private static class HttpClientUtilsSingletonHolder{
+        private static final HttpClientUtils INSTANCE = new HttpClientUtils();
+    }
     public static HttpClientUtils getInstance() {
-        if (httpClientDownload == null) {
-            httpClientDownload = new HttpClientUtils();
-        }
-        return httpClientDownload;
+        return HttpClientUtilsSingletonHolder.INSTANCE;
     }
 
     /**

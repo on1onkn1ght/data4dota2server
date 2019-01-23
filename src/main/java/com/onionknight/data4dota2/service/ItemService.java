@@ -15,10 +15,7 @@ import java.util.concurrent.ExecutionException;
  * @Version :
  */
 public interface ItemService {
-    List<Dota2GameItem> getItems(Dota2WebApiClient client) throws ExecutionException, InterruptedException;
     List<Item> findItems();
-    void addItems(List<Item> list);
     Item getItemById(int id);
-
     List<Item> getAllItems();
 }

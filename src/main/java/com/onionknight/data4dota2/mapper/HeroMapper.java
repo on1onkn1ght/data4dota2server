@@ -13,12 +13,6 @@ import java.util.List;
  */
 public interface HeroMapper {
     Hero findByName(String name);
-    List<Hero> findByAttri(String attribute);
-    int addHero(Hero hero);
-    List<Hero> findAllHero();
-
     List<Hero> findAllHeroName();
-
-    void updateTalent(Hero hero);
 }
 

@@ -42,61 +42,13 @@ public class Data4dota2ApplicationTests {
     @Autowired
     HeroMapper heroMapper;
 
-    @Test
-    public void getHeros() throws Exception {
-        String token = "3799EF44464E180230ED399292D33CF1";
-        Dota2WebApiClient client = new Dota2WebApiClient(token);
-        List<Hero> allHero = heroService.findAllHero();
-        List<Dota2Heroes> dotaHeroes = heroService.findAllHeroFromSteam(client);
-        Map<String, Integer> map = new HashMap<>();
-        for (Dota2Heroes hero : dotaHeroes) {
-            String name = hero.getName();
-            name = name.substring(name.lastIndexOf("hero_") + 5);
-            System.out.println(name);
-            map.put(name, hero.getId());
-        }
-        int count = 0;
-        for (Hero hero : allHero) {
-            if (map.containsKey(hero.getName_en())) {
-                hero.setHero_id(map.get(hero.getName_en()));
-                count++;
-            } else {
-                System.out.println(hero.getName_cn());
-                System.out.println(hero.getName_en());
-            }
-        }
-        heroService.addAllHeroIfo(allHero);
-    }
+
+
 
     @Test
-    public void getItems() throws Exception {
-        String token = "3799EF44464E180230ED399292D33CF1";
-        Dota2WebApiClient client = new Dota2WebApiClient(token);
-        List<Item> items = itemService.findItems();
-        List<Dota2GameItem> gameItems = itemService.getItems(client);
-        Map<String, Integer> map = new HashMap<>();
-        for (Dota2GameItem gameItem : gameItems) {
-            String name = gameItem.getName();
-            name = name.substring(name.indexOf("_")+1);
-            map.put(name,gameItem.getId());
-        }
-        int count=0;
-        for (Item item:items){
-            if (map.containsKey(item.getName_en())) {
-                item.setItem_id(map.get(item.getName_en()));
-                count++;
-            } else {
-                System.out.println(item.getName_cn());
-                System.out.println(item.getName_en());
-            }
-        }
-        itemService.addItems(items);
-    }
-    @Test
     public void code()throws Exception {
-        HttpClientUtils httpClientUtils = HttpClientUtils.getInstance();
-        String url = "https://api.opendota.com/api/matches/4157472318" ;
-        System.out.println(httpClientUtils.httpGet(url));
+        Item itemById = itemService.getItemById(1);
+        System.out.println(itemById.getDescription());
     }
 }
 

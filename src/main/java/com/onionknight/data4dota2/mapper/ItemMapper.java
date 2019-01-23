@@ -12,10 +12,7 @@ import java.util.List;
  * @Version :
  */
 public interface ItemMapper {
-    void addItem(List<Item> list);
     List<Item> findItems();
-    void addRelation(int item, int part);
     Item getItemById(int id);
-
     List<Item> getAllItems();
 }

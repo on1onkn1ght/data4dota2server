@@ -28,42 +28,14 @@ public class HeroServiceImpl implements HeroService {
     @Autowired
     private SkillMapper skillMapper;
 
+    /**
+     *  通过英雄英文名联表查询英雄全部信息
+     * @param name 英文名
+     * @return hero entity
+     */
     @Override
     public Hero findByName(String name) {
         return heroMapper.findByName(name);
-    }
-
-    @Override
-    public List<Hero> findByAttri(String attribute) {
-        return heroMapper.findByAttri(attribute);
-    }
-
-    @Override
-    public List<Hero> findAllHero() {
-        return heroMapper.findAllHero();
-    }
-
-    @Override
-    public void addAllHeroIfo(List<Hero> heroList) {
-        for (Hero hero:heroList){
-            heroMapper.addHero(hero);
-            for (Skill skill:hero.getSkills()){
-                skill.setHero_id(hero.getHero_id());
-            }
-            skillMapper.addSkills(hero.getSkills());
-        }
-    }
-
-    @Override
-    public List<Dota2Heroes> findAllHeroFromSteam(Dota2WebApiClient client) {
-        Dota2Econ econInterface = new Dota2Econ(client);
-        try {
-            List<Dota2Heroes> heroes = econInterface.getGameHeroes(false, "en").get();
-            return heroes;
-        } catch (Exception e) {
-            return null;
-        }
-
     }
 
     @Override
@@ -71,10 +43,4 @@ public class HeroServiceImpl implements HeroService {
         return heroMapper.findAllHeroName();
     }
 
-    @Override
-    public void updateTalent(List<Hero> heroList) {
-        for (Hero hero :heroList){
-            heroMapper.updateTalent(hero);
-        }
-    }
 }

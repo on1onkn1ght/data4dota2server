@@ -12,6 +12,5 @@ import java.util.List;
  * @Version :
  */
 public interface SkillService {
-    void addSkills(List<Skill> skills);
     List<Skill> getSkills();
 }

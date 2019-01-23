@@ -20,11 +20,6 @@ public class SkillServiceImpl implements SkillService {
     @Autowired
     SkillMapper skillMapper;
     @Override
-    public void addSkills(List<Skill> skills) {
-        skillMapper.addSkills(skills);
-    }
-
-    @Override
     public List<Skill> getSkills() {
         return skillMapper.getSkills();
     }

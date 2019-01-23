@@ -23,28 +23,30 @@ import java.util.concurrent.ExecutionException;
 public class ItemServiceImpl implements ItemService {
     @Autowired
     ItemMapper itemMapper;
-    @Override
-    public List<Dota2GameItem> getItems(Dota2WebApiClient client) throws ExecutionException, InterruptedException {
-        Dota2Econ econInterface = new Dota2Econ(client);
-        return econInterface.getGameItems().get();
-    }
 
+    /**
+     * 查询物品ID 名称
+     * @return
+     */
     @Override
     public List<Item> findItems() {
         return itemMapper.findItems();
     }
 
-    @Override
-    public void addItems(List<Item> list) {
-        itemMapper.addItem(list);
-    }
-
-
+    /**
+     * 根据ID查询物品
+     * @param id
+     * @return
+     */
     @Override
     public Item getItemById(int id) {
         return itemMapper.getItemById(id);
     }
 
+    /**
+     * 查询所有物品
+     * @return
+     */
     @Override
     public List<Item> getAllItems() {
         return itemMapper.getAllItems();

@@ -27,73 +27,7 @@
             <result column="pname_cn" property="name_cn" jdbcType="VARCHAR" />
         </collection>
     </resultMap>
-    <insert id="addItem">
-        INSERT into items_copy(
-        item_id,
-        name_en,
-        name_cn,
-        price,
-        hp,
-        mp,
-        str,
-        intl,
-        agi,
-        attack_power,
-        magic_power,
-        armor,
-        cd,
-        cost,
-        magic_resis,
-        attack_arrange,
-        vision_field_day,
-        vision_field_night,
-        move_speed,
-        attack_speed,
-        description
-        )
-        values
-        <foreach collection="list" item="item" separator="," close=";">
-            (
-            #{item.item_id},
-            #{item.name_en},
-            #{item.name_cn},
-            #{item.price},
-            #{item.hp},
-            #{item.mp},
-            #{item.str},
-            #{item.intl},
-            #{item.agi},
-            #{item.attack_power},
-            #{item.magic_power},
-            #{item.armor},
-            #{item.cd},
-            #{item.cost},
-            #{item.magic_resis},
-            #{item.attack_arrange},
-            #{item.vision_field_day},
-            #{item.vision_field_night},
-            #{item.move_speed},
-            #{item.attack_speed},
-            #{item.description}
-            )
-        </foreach>
-
-    </insert>
-    <insert id="addRelation" >
-        insert into item_relation (item_id,parts_item_id) values (#{param1},#{param2})
-    </insert>
-    <select id="findItems" resultType="com.onionknight.data4dota2.entity.Item">
-        select
-            item_id,
-            name_en,
-            name_cn,
-            type
-        from items
-    </select>
-    <select id="getItemById" resultType="com.onionknight.data4dota2.entity.Item">
-        select * from items where item_id = #{param1}
-    </select>
-    <select id="getAllItems" resultMap="BaseResultMap">
+    <sql id="itemSelect">
         select
               i.item_id,
               i.name_en,
@@ -119,8 +53,22 @@
               p.name_cn pname_cn
               from items i left join item_relation r on i.item_id = r.item_id
               left join items p
-              on r.parts_item_id = p.item_id order by i.item_id
+              on r.parts_item_id = p.item_id
+    </sql>
+    <select id="findItems" resultType="com.onionknight.data4dota2.entity.Item">
+        select
+            item_id,
+            name_en,
+            name_cn,
+            type
+        from items
     </select>
-
-
+    <select id="getItemById" resultMap="BaseResultMap">
+        <include refid="itemSelect"></include>
+        where i.item_id = #{param1}
+    </select>
+    <select id="getAllItems" resultMap="BaseResultMap">
+        <include refid="itemSelect"></include>
+        order by i.item_id
+    </select>
 </mapper>

@@ -14,6 +14,7 @@ import com.onionknight.data4dota2.mapper.MatchMapper;
 import com.onionknight.data4dota2.service.HeroService;
 import com.onionknight.data4dota2.service.MatchService;
 import com.onionknight.data4dota2.utils.HttpClientUtils;
+import com.onionknight.data4dota2.utils.IdToNameUtil;
 import org.apache.commons.compress.compressors.bzip2.BZip2CompressorInputStream;
 import org.apache.commons.io.Charsets;
 import org.apache.commons.lang3.CharSet;
@@ -61,7 +62,7 @@ public class MatchServiceImpl implements MatchService {
     HeroMapper heroMapper;
     @Autowired
     ItemMapper itemMapper;
-    HttpClientUtils httpClientUtils = HttpClientUtils.getInstance();
+    private HttpClientUtils httpClientUtils = HttpClientUtils.getInstance();
     @Autowired
     private MatchMapper matchMapper;
     private Match match = new Match();
@@ -74,17 +75,10 @@ public class MatchServiceImpl implements MatchService {
     private int lasttime = 0;
     private int gameStartTime = 0;
     private HashMap<Integer, Integer> slot_to_playerslot = new HashMap<Integer, Integer>();
-    private HashMap<Integer, String> heroIdToEnName = new HashMap<>();
-    private HashMap<Integer, String> heroIdToCnName = new HashMap<>();
-    private HashMap<Integer, String> itemIdToName = new HashMap<>();
+    @Autowired
+    private IdToNameUtil idToNameUtil;
     @Override
     public String getMatchDetail(long id) {
-        if (heroIdToEnName.size()==0) {
-            List<Hero> allHeroName = heroMapper.findAllHeroName();
-            for (Hero hero : allHeroName) {
-                heroIdToEnName.put(hero.getHero_id(), hero.getName_en());
-            }
-        }
         MatchJson match = matchMapper.getMatchUrl(id);
         if (match==null){
             String matchOverview = getMatchOverview(id);
@@ -116,39 +110,13 @@ public class MatchServiceImpl implements MatchService {
         }
     }
 
-
-    public static void main(String[] args) throws Exception {
-        String token = "3799EF44464E180230ED399292D33CF1";
-        Dota2WebApiClient client = new Dota2WebApiClient(token);
-        Dota2Match dota2Match = new Dota2Match(client);
-        Dota2MatchHistoryCriteria criteria = new Dota2MatchHistoryCriteria();
-        criteria.accountId(180630066);
-        criteria.matchesRequested(10);
-
-        Dota2MatchHistory dota2MatchHistory = dota2Match.getMatchHistory(criteria).get();
-        List<Dota2MatchHistoryInfo> matches = dota2MatchHistory.getMatches();
-        for (Dota2MatchHistoryInfo match : matches) {
-            System.out.println(match);
-        }
-    }
     @Override
     public String getMatchOverview(long id) {
+        HashMap<Integer, String> itemIdToName = idToNameUtil.getItemIdToName();
+        HashMap<Integer, String> heroIdToEnName = idToNameUtil.getHeroIdToEnName();
         MatchJson matchOverview1 = matchMapper.getMatchOverview(id);
-
         if (matchOverview1!=null) {
             return new String(matchOverview1.getOverview(),Charsets.UTF_8);
-        }
-        if (heroIdToEnName.size()==0) {
-            List<Hero> allHeroName = heroMapper.findAllHeroName();
-            for (Hero hero : allHeroName) {
-                heroIdToEnName.put(hero.getHero_id(),hero.getName_en());
-            }
-        }
-        if (itemIdToName.size()==0) {
-            List<Item> allItems = itemMapper.getAllItems();
-            for (Item allItem : allItems) {
-                itemIdToName.put(allItem.getItem_id(),allItem.getName_en());
-            }
         }
         String url = "https://api.opendota.com/api/matches/" + id;
         MatchOverview matchOverview = new MatchOverview();
@@ -193,13 +161,8 @@ public class MatchServiceImpl implements MatchService {
 
     @Override
     public List<MatchHistory> getMatchHistories(long acountId, int num,long matchId) {
+        HashMap<Integer, String> heroIdToCnName = idToNameUtil.getHeroIdToCnName();
         Dota2Match dota2Match = new Dota2Match(client);
-        if (heroIdToCnName.size()==0) {
-            List<Hero> allHeroName = heroMapper.findAllHeroName();
-            for (Hero hero : allHeroName) {
-                heroIdToCnName.put(hero.getHero_id(),hero.getName_cn());
-            }
-        }
         Dota2MatchHistoryCriteria criteria = new Dota2MatchHistoryCriteria();
         criteria.accountId(acountId);
         criteria.matchesRequested(num);
@@ -217,8 +180,6 @@ public class MatchServiceImpl implements MatchService {
                 int startTime = match.getStartTime();
                 long start = (long)startTime *1000;
                 Date date = new Date(start);
-                System.out.println(date.getTime());
-                System.out.println(new Date().getTime());
                 matchHistory.setTime(dataFormat.format(date));
                 List<Dota2MatchHistoryPlayer> players = match.getPlayers();
                 for (Dota2MatchHistoryPlayer player : players) {
@@ -317,6 +278,7 @@ public class MatchServiceImpl implements MatchService {
                     init = true;
                 }
                 for (int i = 0; i < numPlayers; i++) {
+                    HashMap<Integer, String> heroIdToEnName = idToNameUtil.getHeroIdToEnName();
                     int handle = getEntityProperty(pr, "m_vecPlayerTeamData.%i.m_hSelectedHero", validIndices[i]);
                     int playerTeam = getEntityProperty(pr, "m_vecPlayerData.%i.m_iPlayerTeam", validIndices[i]);
                     int teamSlot = getEntityProperty(pr, "m_vecPlayerTeamData.%i.m_iTeamSlot", validIndices[i]);
