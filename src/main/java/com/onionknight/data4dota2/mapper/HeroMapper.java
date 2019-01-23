@@ -1,6 +1,5 @@
 package com.onionknight.data4dota2.mapper;
 
-import com.onionknight.data4dota2.entity.Attribute;
 import com.onionknight.data4dota2.entity.Hero;
 
 import java.util.List;

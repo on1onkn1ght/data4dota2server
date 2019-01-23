@@ -3,7 +3,6 @@ package com.onionknight.data4dota2;
 import com.ibasco.agql.protocols.valve.dota2.webapi.Dota2WebApiClient;
 import com.ibasco.agql.protocols.valve.dota2.webapi.pojos.Dota2GameItem;
 import com.ibasco.agql.protocols.valve.dota2.webapi.pojos.Dota2Heroes;
-import com.onionknight.data4dota2.controller.HelloWorldController;
 import com.onionknight.data4dota2.entity.*;
 import com.onionknight.data4dota2.mapper.*;
 import com.onionknight.data4dota2.service.*;
@@ -34,8 +33,6 @@ public class Data4dota2ApplicationTests {
     @Autowired
     SkillService skillService;
     @Autowired
-    DataWormService dataWormService;
-    @Autowired
     MatchService matchService;
     @Autowired
     ItemService itemService;
@@ -44,11 +41,6 @@ public class Data4dota2ApplicationTests {
 
     @Autowired
     HeroMapper heroMapper;
-
-    @Before
-    public void setUp() throws Exception {
-        mvc = MockMvcBuilders.standaloneSetup(new HelloWorldController()).build();
-    }
 
     @Test
     public void getHeros() throws Exception {
