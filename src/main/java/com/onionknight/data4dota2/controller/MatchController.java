@@ -23,11 +23,11 @@ import java.util.List;
  */
 @Controller
 @RequestMapping(value = "/matches")
+@CrossOrigin(origins = {"http://localhost:8081"},allowCredentials = "true")
 public class MatchController {
     @Autowired
     MatchService matchService;
     @RequestMapping(value = "/overview",method = RequestMethod.GET)
-    @CrossOrigin
     @ResponseBody
     public RespEntity findMatchOverview(@RequestParam("id") long id){
         String matchOverview = matchService.getMatchOverview(id);
@@ -35,7 +35,6 @@ public class MatchController {
         return new RespEntity(RespCode.SUCCESS,jsonObject);
     }
     @RequestMapping(value = "/detail",method = RequestMethod.GET)
-    @CrossOrigin
     @ResponseBody
     public RespEntity findMatchDetail(@RequestParam("id") long id){
         String matchDetail = matchService.getMatchDetail(id);
@@ -43,7 +42,6 @@ public class MatchController {
         return new RespEntity(RespCode.SUCCESS,objects);
     }
     @RequestMapping(value = "/history",method = RequestMethod.GET)
-    @CrossOrigin
     @ResponseBody
     public RespEntity getMatchHistory(@RequestParam("acountid") long acountid,@RequestParam("matchid") long matchid){
         List<MatchHistory> matchHistories = matchService.getMatchHistories(acountid, 11, matchid);

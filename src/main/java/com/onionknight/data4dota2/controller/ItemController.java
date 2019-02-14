@@ -19,18 +19,17 @@ import java.util.List;
  */
 @Controller
 @RequestMapping(value = "/items")
+@CrossOrigin(origins = {"http://localhost:8081"},allowCredentials = "true")
 public class ItemController {
     @Autowired
     ItemService itemService;
     @RequestMapping(value = "/allIcon",method = RequestMethod.GET)
-    @CrossOrigin
     @ResponseBody
     public RespEntity findAllItemIcon(){
         List<Item> items = itemService.findItems();
         return new RespEntity(RespCode.SUCCESS,items);
     }
     @RequestMapping(value = "/item",method = RequestMethod.GET)
-    @CrossOrigin
     @ResponseBody
     public RespEntity findItemById(@RequestParam("id") int id){
         Item item = itemService.getItemById(id);

@@ -37,6 +37,7 @@ import skadistats.clarity.processor.stringtables.UsesStringTable;
 import skadistats.clarity.source.InputStreamSource;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -100,7 +101,6 @@ public class MatchServiceImpl implements MatchService {
             long tStart = System.currentTimeMillis();
             new SimpleRunner(new InputStreamSource(bzis)).runWith(this);
             long tMatch = System.currentTimeMillis() - tStart;
-            System.out.println(tMatch);
             String matchans = JSON.toJSONString(this.match.getMatchDetail());
             matchMapper.addMatchDetail(id,matchans.getBytes());
             return matchans;

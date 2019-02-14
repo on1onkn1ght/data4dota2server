@@ -21,18 +21,17 @@ import java.util.PriorityQueue;
  */
 @Controller
 @RequestMapping(value = "/heroes")
+@CrossOrigin(origins = {"http://localhost:8081"},allowCredentials = "true")
 public class HeroController {
     @Autowired
     private HeroService heroService;
     @RequestMapping(value = "/index")
-    @CrossOrigin
     @ResponseBody
     public RespEntity findAllHeroes(){
         List<Hero> heroes = heroService.findAllHeroName();
         return new RespEntity(RespCode.SUCCESS,heroes);
     }
     @RequestMapping(value = "/hero",method = RequestMethod.GET)
-    @CrossOrigin
     @ResponseBody
     public RespEntity findHero(@RequestParam("name") String name){
         Hero hero = heroService.findByName(name);

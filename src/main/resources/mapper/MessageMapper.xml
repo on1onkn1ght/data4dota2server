@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.onionknight.data4dota2.mapper.MessageMapper">
+    <sql id="table">
+        message
+    </sql>
+    <sql id="selectField">
+        id,from_id fromId, to_id toId, content, created_date createdDate, has_read hasRead
+    </sql>
+    <sql id="insertField">
+        from_id , to_id , content, created_date , has_read
+    </sql>
+    <insert id="addMessage" parameterType="com.onionknight.data4dota2.entity.Message">
+        insert into
+        <include refid="table"/>
+        (
+        <include refid="insertField"/>
+        )values (
+          #{fromId},#{toId},#{content},#{createdDate},#{hasRead}
+        )
+    </insert>
+
+
+</mapper>

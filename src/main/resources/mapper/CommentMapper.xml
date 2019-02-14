@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.onionknight.data4dota2.mapper.CommentMapper">
+    <sql id="table">
+        comment
+    </sql>
+    <sql id="selectField">
+        comment_id commentId, content, entity_id entityId, entity_type entityType,
+         created_date createdDate, user_id userId, nickname
+
+    </sql>
+    <sql id="insertField">
+        content, entity_id, entity_type, created_date, user_id, nickname
+    </sql>
+    <insert id="add" parameterType="com.onionknight.data4dota2.entity.Comment">
+        insert into
+        <include refid="table"/>
+        (
+        <include refid="insertField"/>
+        )values (
+          #{content},#{entityId},#{entityType},#{createdDate},#{userId},#{nickname}
+        )
+    </insert>
+    <select id="selectByEntityId" resultType="com.onionknight.data4dota2.entity.Comment">
+        select
+        <include refid="selectField"/>
+        from
+        <include refid="table"/>
+        where entity_id = #{param1} and entity_type = #{param2}
+    </select>
+    <select id="selectById" resultType="com.onionknight.data4dota2.entity.Comment">
+        select
+        <include refid="selectField"/>
+        from
+        <include refid="table"/>
+        where comment_id = #{id}
+    </select>
+
+</mapper>

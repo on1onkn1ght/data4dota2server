@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.onionknight.data4dota2.mapper.UserMapper">
+    <sql id="table">
+        users
+    </sql>
+    <sql id="selectField">
+        id, steam_id,username,password,nickname,salt,head_url
+    </sql>
+    <sql id="insertField">
+        steam_id,username,password,nickname,salt,head_url
+    </sql>
+    <insert id="addUser" parameterType="com.onionknight.data4dota2.entity.User" >
+        insert into
+        <include refid="table"/>
+        (
+        <include refid="insertField"/>
+        )
+        values
+        (#{steamId},#{username},#{password},#{nickname},#{salt},#{headUrl})
+    </insert>
+    <select id="selectUserByName" resultType="com.onionknight.data4dota2.entity.User">
+        select
+        <include refid="selectField"/>
+        from
+        <include refid="table"/>
+        where
+        username = #{name}
+    </select>
+</mapper>
