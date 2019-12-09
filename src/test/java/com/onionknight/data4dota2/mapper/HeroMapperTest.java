@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.List;
+
 /**
  * @Author :fdy
  * @Date :Created in 15:27 2019/1/4
@@ -23,5 +25,10 @@ public class HeroMapperTest {
     @Autowired
     private HeroService heroService;
 
+    @Test
+    public void aaTest(){
+        List<Hero> allHeroName = heroMapper.findAllHeroName();
+        System.out.println(allHeroName.size());
+    }
 
 }

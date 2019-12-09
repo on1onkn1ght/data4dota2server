@@ -15,5 +15,6 @@ public class Data4dota2Application {
 		SpringApplication.run(Data4dota2Application.class, args);
 	}
 
+
 }
 

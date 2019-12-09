@@ -11,7 +11,7 @@
 	<groupId>com.onionknight</groupId>
 	<artifactId>data4dota2</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>data4dota2</name>
 	<description>practice project for springboot about dota2</description>
 
